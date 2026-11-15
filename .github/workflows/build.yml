@@ -1,0 +1,57 @@
+name: Build Signed ChronoAge APK
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install & Setup Capacitor Android
+        run: |
+          npm install
+          npx cap init "ChronoAge Pro" "com.chronoage.pro" --web-dir=www
+          npx cap add android
+          npx cap sync android
+
+      - name: Inject AdMob Test App ID
+        run: |
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          sed -i 's/<\/application>/<meta-data android:name="com.google.android.gms.ads.APPLICATION_ID" android:value="ca-app-pub-3940256099942544~3347511713"\/><\/application>/g' $MANIFEST
+
+      - name: Build & Sign APK (V1+V2)
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleRelease
+
+          # Generate Keystore & Sign APK so Android installs cleanly
+          keytool -genkey -v -keystore release.keystore -alias chronoage -keyalg RSA -keysize 2048 -validity 10000 -storepass android123 -keypass android123 -dname "CN=ChronoAge, OU=Dev, O=App, L=City, S=State, C=IN"
+
+          BUILD_TOOLS=$(ls -d $ANDROID_HOME/build-tools/* | tail -n 1)
+          $BUILD_TOOLS/zipalign -v -p 4 app/build/outputs/apk/release/app-release-unsigned.apk app-aligned.apk
+          $BUILD_TOOLS/apksigner sign --ks release.keystore --ks-pass pass:android123 --key-pass pass:android123 --out ChronoAge-Pro.apk app-aligned.apk
+
+      - name: Upload Final APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ChronoAge-Pro-APK
+          path: android/ChronoAge-Pro.apk
+          
