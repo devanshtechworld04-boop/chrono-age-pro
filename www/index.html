@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ChronoAge Pro</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-container">
+    <header class="app-header">
+      <div>
+        <h1>ChronoAge <span class="badge">PRO</span></h1>
+        <p class="subtitle">Precision Life & Time Analytics</p>
+      </div>
+      <button id="saveProfileBtn" class="icon-btn" title="Save Profile">💾</button>
+    </header>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="calculator">Age Calc</button>
+      <button class="tab-btn" data-tab="compare">Compare</button>
+      <button class="tab-btn" data-tab="cosmic">Cosmic</button>
+      <button class="tab-btn" data-tab="saved">Saved</button>
+    </nav>
+
+    <!-- TAB 1: Age Calculator -->
+    <section id="calculator" class="tab-content active">
+      <div class="glass-card input-card">
+        <div class="input-group">
+          <label for="dobInput">Date of Birth</label>
+          <input type="date" id="dobInput" />
+        </div>
+        <div class="input-group">
+          <label for="targetDateInput">Age at Date (Default: Today)</label>
+          <input type="date" id="targetDateInput" />
+        </div>
+        <button id="calculateBtn" class="primary-btn">Calculate Exact Age</button>
+      </div>
+
+      <div id="resultSection" class="hidden">
+        <div class="glass-card hero-result">
+          <span class="label">EXACT CHRONOLOGICAL AGE</span>
+          <div class="age-grid">
+            <div class="age-box">
+              <span id="yearsVal" class="big-num">0</span>
+              <span class="unit">Years</span>
+            </div>
+            <div class="age-box">
+              <span id="monthsVal" class="big-num">0</span>
+              <span class="unit">Months</span>
+            </div>
+            <div class="age-box">
+              <span id="daysVal" class="big-num">0</span>
+              <span class="unit">Days</span>
+            </div>
+          </div>
+          <div class="live-ticker" id="liveTicker">Live: 00h : 00m : 00s</div>
+        </div>
+
+        <div class="glass-card bday-card">
+          <div class="bday-header">
+            <span>🎂 Next Birthday Countdown</span>
+            <span id="nextBdayDay" class="pill">Sunday</span>
+          </div>
+          <p id="nextBdayText" class="highlight-text">0 Months, 0 Days left</p>
+          <div class="progress-bar-bg">
+            <div id="bdayProgress" class="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="glass-card stat-item">
+            <span class="stat-label">Total Months</span>
+            <span id="totalMonths" class="stat-val">0</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Total Weeks</span>
+            <span id="totalWeeks" class="stat-val">0</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Total Days</span>
+            <span id="totalDays" class="stat-val">0</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Total Hours</span>
+            <span id="totalHours" class="stat-val">0</span>
+          </div>
+        </div>
+
+        <button id="shareResultBtn" class="secondary-btn">📤 Share Age Summary</button>
+      </div>
+    </section>
+
+    <!-- TAB 2: Compare Ages -->
+    <section id="compare" class="tab-content">
+      <div class="glass-card">
+        <h3>Age Difference Calculator</h3>
+        <div class="input-group">
+          <label>Person 1 (Name & DOB)</label>
+          <input type="text" id="p1Name" placeholder="e.g., Alex" />
+          <input type="date" id="p1Dob" />
+        </div>
+        <div class="input-group">
+          <label>Person 2 (Name & DOB)</label>
+          <input type="text" id="p2Name" placeholder="e.g., Sam" />
+          <input type="date" id="p2Dob" />
+        </div>
+        <button id="compareBtn" class="primary-btn">Compare Ages</button>
+        <div id="compareResult" class="compare-box hidden"></div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Cosmic & Bio Stats -->
+    <section id="cosmic" class="tab-content">
+      <div class="glass-card">
+        <h3>🪐 Planetary Age & Bio-Metrics</h3>
+        <p class="hint">Calculate your age on the first tab to update live cosmic stats.</p>
+        <div class="stats-grid">
+          <div class="glass-card stat-item">
+            <span class="stat-label">Zodiac Sign</span>
+            <span id="zodiacVal" class="stat-val">-</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Birth Day</span>
+            <span id="bornDayVal" class="stat-val">-</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Mercury Age</span>
+            <span id="mercuryVal" class="stat-val">-</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Mars Age</span>
+            <span id="marsVal" class="stat-val">-</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Est. Heartbeats</span>
+            <span id="heartVal" class="stat-val">-</span>
+          </div>
+          <div class="glass-card stat-item">
+            <span class="stat-label">Leap Years Lived</span>
+            <span id="leapVal" class="stat-val">-</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: Saved Birthdays -->
+    <section id="saved" class="tab-content">
+      <div class="glass-card">
+        <h3>Saved Birthdays</h3>
+        <div id="savedList" class="saved-list">
+          <p class="hint">No saved profiles yet. Calculate an age and tap 💾 to save.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-spacer"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+            </html>
+            
