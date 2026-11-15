@@ -1,0 +1,17 @@
+{
+  "name": "chrono-age-pro",
+  "version": "1.0.0",
+  "description": "ChronoAge Pro - Exact Age & Cosmic Calculator",
+  "main": "www/index.html",
+  "scripts": {
+    "build": "echo 'Ready'"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.2",
+    "@capacitor/android": "^6.1.2",
+    "@capacitor-community/admob": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.1.2"
+  }
+}
